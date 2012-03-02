@@ -20,7 +20,9 @@
         </div>
 
         <div class="split-right">
-
+            <?php if (models_meta_images::checkMapImage($this->games['mapname']) === TRUE) : ?>
+                <img src="/templates/global/images/maps/<?php echo $this->games['mapname']; ?>.jpg" class="img-map" />
+            <?php endif; ?>
         </div>
 
         <?php $this->getTemplateFile('_games/players.table.php'); ?>
