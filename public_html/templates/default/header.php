@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Qubit</title>
+    <title>Qubit | Quake III Log Parser and Stats Calculator</title>
 
     <link rel="stylesheet" type="text/css" href="/templates/default/css/reset.css" media="screen, projection" />
     <link rel="stylesheet" type="text/css" href="/templates/default/css/screen.css" media="screen, projection" />
@@ -48,4 +48,3 @@
                 <li><a href="/stats/ladders">Ladders</a></li>
             </ol>
         </div>
-

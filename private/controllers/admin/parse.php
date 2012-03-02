@@ -19,43 +19,62 @@
 
 /**
  * --------------------------------------------------------------------------------------------------------------------
- * Qubit Admin Dispatcher Class
+ * Qubit Game Statistics Controller Class
  * --------------------------------------------------------------------------------------------------------------------
- * Dispatchers act as a factory-like class by instantiating controller objects.
+ * Controller classes act as an interface between the template engine and the data models, performing basic logic and
+ * template variable assignment.
+ *
+ * Controller classes are instantiated by a dispatcher class.
  * --------------------------------------------------------------------------------------------------------------------
  * @package     Qubit
- * @category    dispatchers
+ * @category    controllers
  * @subpackage  admin
  * --------------------------------------------------------------------------------------------------------------------
  */
-class dispatchers_admin extends core_services_dispatcher
+class controllers_admin_parse extends core_services_controller
 {
     /**
-	 * Class Constructor
-     *
-     * Checks current logged in session for access to admin onjects. Redirects to login form if user
-     * does not have access.
-     *
-     * Put additional code before parent::__constructor() is called or it will be ignored.
-	 */
+     * Class Constructor
+     */
     public function __construct()
     {
+        // Template to use
+        $this->template = new core_services_template(Q_TEMPLATE_DIR);
+
+        // Get optional parameter
+        $router = new core_services_router();
+        $this->parameter = $router->getParameters(0);
+
         parent::__construct();
     }
 
     /**
-     * Index Controller
+     * Default Controller Method
      *
-     * This method is called if a controller is requested in the URL.
+     * @return  void
      */
     public function index()
     {
-        return new controllers_admin_index();
-    }
+        $logsModel = new models_logs_log();
+        $logs = $logsModel->getLogs();
 
-    public function parse()
-    {
-        return new controllers_admin_parse();
+        if (count($logs) != 0) {
+
+            if (Q_APPEND_DATA == FALSE) {
+                $dbModel = new models_database_empty();
+                $dbModel->emptyTables();
+            }
+
+            $gamesModel = new models_parsers_games();
+
+            foreach ($logs as $log) {
+                $contents = $logsModel->readLog($log);
+                $games = $gamesModel->getGames($contents);
+                $gamesModel->parseGame($games, $contents);
+                $logsModel->archiveLog($log);
+            }
+
+        }
     }
 
 }
