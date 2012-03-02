@@ -33,6 +33,7 @@ class models_parsers_items extends models_parsers_games
     public function __construct($game_id)
     {
         $this->game_id = $game_id;
+        $this->db = core_services_database::getConnection();
     }
 
     public function parseItems($line)
@@ -53,16 +54,15 @@ class models_parsers_items extends models_parsers_games
         $query = "
             INSERT INTO items
                 (game_id, time, player_id, item)
-            VALUES (?, ?, ?, ?)";
+            VALUES (:game_id, :time, :player_id, :item)";
 
-        $time = time();
+        $data = $this->db->prepare($query);
+        $data->bindParam(':game_id', $this->game_id, PDO::PARAM_INT);
+        $data->bindParam(':time', $info['time'], PDO::PARAM_STR);
+        $data->bindParam(':player_id', $info['player_id'], PDO::PARAM_INT);
+        $data->bindParam(':item', $info['item'], PDO::PARAM_STR);
 
-        $this->db = core_services_database::getConnection();
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('iiis', $this->game_id, $time, $info['player_id'], $info['item']);
-        $stmt->execute();
-        $stmt->close();
+        return $data->execute();
 
-       return;
     }
 }

@@ -40,13 +40,13 @@
     define('Q_VERSION', '0.0.1');
 
     // OS Directory Seperator
-    define('DS', '/');
+    define('DS', DIRECTORY_SEPARATOR);
 
     // Root Application Paths
     define('Q_PUBLIC_DIR', str_replace('\\', '/', dirname(__FILE__)));
     define('Q_PRIVATE_DIR', dirname(Q_PUBLIC_DIR) . DS . 'private');
 
-    define('Q_CURRENT_URI', Q_BASE_URL . $_SERVER['REQUEST_URI']);
+    define('Q_CURRENT_URI', $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
 
     // Set Server Time Zone
     date_default_timezone_set('America/Detroit');

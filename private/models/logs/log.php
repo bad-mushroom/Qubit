@@ -30,12 +30,22 @@
  */
 class models_logs_log
 {
+    /**
+     *
+     */
     public function __construct()
     {
         $this->path = Q_PRIVATE_DIR . DS . 'assets' . DS . 'logs';
         $this->archive_path = Q_PRIVATE_DIR . DS . 'assets' . DS . 'archives';
     }
 
+    /**
+     * Get Log Files from Logs Directory
+     *
+     * Adds each filename in the logs directory to an array.
+     *
+     * @return mixed    FALSE if no logs are found or an array of filenames
+     */
     public function getLogs()
     {
         $dh = opendir($this->path);
@@ -52,6 +62,14 @@ class models_logs_log
         return FALSE;
     }
 
+    /**
+     * Archive Log Files
+     *
+     * Move parsed log files to the archive directory.
+     *
+     * @param   string    $log    Log filename
+     * @return  boolean
+     */
     public function archiveLog($log)
     {
         $archive = time() . '.log';
@@ -62,6 +80,14 @@ class models_logs_log
         return FALSE;
     }
 
+    /**
+     * Read Log File
+     *
+     * Read contents of log file into an array.
+     *
+     * @param   string  $log    Log filename
+     * @return  mixed   FALSE on error or $file (array)
+     */
     public function readLog($log)
     {
         $file = file($this->path . DS . $log);
@@ -72,5 +98,5 @@ class models_logs_log
         return FALSE;
 
     }
-
+    
 }

@@ -63,4 +63,16 @@ class dispatchers_stats extends core_services_dispatcher
     {
         return new controllers_stats_players();
     }
+    public function ladders()
+    {
+        return new controllers_stats_ladders();
+    }
+    public function rankings()
+    {
+        return new controllers_stats_rankings();
+    }
+    public function search()
+    {
+        return new controllers_stats_search();
+    }
 }

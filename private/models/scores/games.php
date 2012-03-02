@@ -30,33 +30,49 @@
  */
 class models_scores_games
 {
-    public function getGames($game_id = NULL, $order = NULL)
+    public function __construct()
     {
-        if ($game_id !== NULL) {
-            $query = "SELECT * FROM games WHERE id = " . $game_id;
-        } else {
-            $query = "SELECT * FROM games";
-        }
-
-        if ($order !== NULL) {
-            $query .= " ORDER BY" . $order;
-        }
-
         $this->db = core_services_database::getConnection();
-        $result = $this->db->query($query);
 
-        if ($result !== NULL) {
-            $games = array();
-
-            while ($row = $result->fetch_row()) {
-                $games[] = $row;
-            }
-            $result->close();
-
-            return $games;
-        }
-        return FALSE;
     }
 
+    public function getGames($game_id = NULL)
+    {
+
+        $query = "SELECT * FROM games";
+
+        if ($game_id !== NULL) {
+            $query .= " WHERE id = :game_id";
+        }
+
+        $data = $this->db->prepare($query);
+
+        if ($game_id !== NULL) {
+            $data->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+        }
+
+        $data->execute();
+        $games = $data->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($game_id == NULL) {
+            return $games;
+        } else {
+            return array_shift($games);
+        }
+
+    }
+
+    public function getGamesForPlayer($player)
+    {
+        $query = "SELECT * FROM games_by_player WHERE name = :player";
+
+        $data = $this->db->prepare($query);
+
+            $data->bindParam(':player', $player, PDO::PARAM_STR);
+
+
+        $data->execute();
+        return $data->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }

@@ -72,6 +72,6 @@
         $dispatcher = new $d();
     } else {
         // Unknown Dispatcher
-        $template = new core_services_template('default');
+        $template = new core_services_template(Q_TEMPLATE_DIR);
         $template->getTemplateFile('_errors/404.php');
     }

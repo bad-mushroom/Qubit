@@ -1,50 +1,46 @@
-<?php $this->getTemplateFile('header.php'); ?>
+<table id="games_table" class="tablesorter">
+    <thead>
+        <tr>
+            <th><span class="sort">Game</span></th>
+            <!--<th><span class="sort">Parse Time</span></th>-->
+            <th><span class="sort">Server Name</span></th>
+            <th><span class="sort">Frag Limit</span></th>
+            <th><span class="sort">Time Limit</span></th>
+            <th><span class="sort">Map Name</span></th>
+            <!--<th><span class="sort">Version</span></th>-->
+            <th><span class="sort">Game Type</span></th>
+            <th><span class="sort">Mod</span></th>
+        </tr>
+    </thead>
 
-    <div id="navigation">
-        <?php $this->getTemplateFile('_games/menu.php'); ?>
-    </div>
+    <tbody>
+    <?php if (count($this->games) != 0) : ?>
+        <?php foreach ($this->games as $game) : ?>
+        <?php if (class_exists('assets_mods_' . $game['gamename']) !== FALSE) : $class = 'assets_mods_'.$game['gamename']; ?>
+        <?php $mod = new $class(); ?>
+        <?php $game['gametype'] = $mod->getGameType($game['gametype']); ?>
+        <?php $game['gamename'] = $mod->getModName(); ?>
+        <?php endif; ?>
 
-    <div id="content">
+        <tr>
+            <td><a href='/stats/games/view/<?php echo $game['id'];?>'><?php echo $game['id']; ?></a></td>
+            <!--<td><?php echo date('Y-M-d, g:i a T',$game['parse_time']); ?></td>-->
+            <td><?php echo $game['hostname']; ?></td>
+            <td><?php echo $game['fraglimit']; ?></td>
+            <td><?php echo $game['timelimit']; ?></td>
+            <td><?php echo $game['mapname']; ?></td>
+            <!--<td><?php  echo $game['version']; ?></td>-->
+            <td><?php echo $game['gametype']; ?></td>
+            <td><?php echo $game['gamename']; ?></td>
+        </tr>
 
-        <h2><?php echo $this->page_title; ?></h2>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <tr>
+            <td colspan="9">No games to display</td>
+        </tr>
+    <?php endif; ?>
+    </tbody>
+</table>
 
-        <table id="games_table" class="tablesorter">
-            <thead>
-                <tr>
-                    <th>Game</th>
-                    <th>Parse Time</th>
-                    <th>Server Name</th>
-                    <th>Frag Limit</th>
-                    <th>Time Limit</th>
-                    <th>Map Name</th>
-                    <th>Version</th>
-                    <th>Game Type</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php if (count($this->games) != 0) : ?>
-                <?php foreach ($this->games as $game) : ?>
-
-                <tr>
-                    <td><a href='/stats/games/view/<?php echo $game[0];?>'><?php echo $game[0]; ?></a></td>
-                    <td><?php echo $game[1]; ?></td>
-                    <td><?php echo $game[2]; ?></td>
-                    <td><?php echo $game[3]; ?></td>
-                    <td><?php echo $game[4]; ?></td>
-                    <td><?php echo $game[5]; ?></td>
-                    <td><?php echo $game[6]; ?></td>
-                    <td><?php echo $game[7]; ?></td>
-                </tr>
-
-                <?php endforeach; ?>
-            <?php else : ?>
-                <tr>
-                    <td colspan="8">No games to display</td>
-                </tr>
-            <?php endif; ?>
-            </tbody>
-        </table>
-
-    </div>
-
-<?php $this->getTemplateFile('footer.php'); ?>
+<?php $this->getTemplateFile('table.pager.php'); ?>

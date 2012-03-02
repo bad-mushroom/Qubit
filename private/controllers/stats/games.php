@@ -39,7 +39,7 @@ class controllers_stats_games extends core_services_controller
     public function __construct()
     {
         // Template to use
-        $this->template = new core_services_template('default');
+        $this->template = new core_services_template(Q_TEMPLATE_DIR);
 
         // Get optional parameter
         $router = new core_services_router();
@@ -62,7 +62,7 @@ class controllers_stats_games extends core_services_controller
         $this->template->assignVariable('games', $games);
         $this->template->assignVariable('page_title', 'All Games');
         $this->template->assignVariable('page_description', '');
-        $this->template->getTemplateFile('_games/games.table.php');
+        $this->template->getTemplateFile('_games/games.index.php');
     }
 
     /**
@@ -77,15 +77,28 @@ class controllers_stats_games extends core_services_controller
         if (!empty($this->parameter)) {
 
             $scoresModel = new models_scores_games();
-            $games = $scoresModel->getGames($this->parameter);
+            $game = $scoresModel->getGames($this->parameter);
+
+            if (class_exists('assets_mods_' . $game['gamename']) !== FALSE) {
+                $class = 'assets_mods_'.$game['gamename'];
+                $mod = new $class();
+                $game['gametype'] = $mod->getGameType($game['gametype']);
+                $game['gamename'] = $mod->getModName();
+            }
 
             $playersModel = new models_scores_players();
-            $players = $playersModel->getPlayersForGame($games[0]);
+            $players = $playersModel->getPlayersForGame($game['id']);
+
+            $fragsModel = new models_scores_frags();
+
+            foreach ($players as &$player) {
+                $player = $fragsModel->addLadderes($player);
+            }
 
             // Template data
-            $this->template->assignVariable('games', $games);
+            $this->template->assignVariable('games', $game);
             $this->template->assignVariable('players', $players);
-            $this->template->assignVariable('page_title', 'Game # ' . $games[0][0]);
+            $this->template->assignVariable('page_title', 'Game # ' . $game['id']);
             $this->template->assignVariable('page_description', '');
             $this->template->getTemplateFile('_games/games.detail.php');
 

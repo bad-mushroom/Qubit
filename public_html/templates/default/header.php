@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title></title>
+    <title>Qubit</title>
 
     <link rel="stylesheet" type="text/css" href="/templates/default/css/reset.css" media="screen, projection" />
     <link rel="stylesheet" type="text/css" href="/templates/default/css/screen.css" media="screen, projection" />
@@ -21,25 +21,31 @@
             $("table").tablesorter({
                 sortList: [[0,0]]
             });
+            $("#ladderstable").tablesorter( {sortList: [[3,1]]} );
         });
     </script>
 
 </head>
 <body>
+    <div class="wrapper">
 
-    <div id="wrapper">
-
-            <div id="header">
-                <h1>Quake 3 Stats</h1>
+        <div id="header">
+            <h1>Qubit | Log Parser &amp; Stats Calculator</h1>
+            <div id="search">
+                <form action="/stats/search" method="post" name="search">
+                    <input type="text" name="search" value="Player Search" class="form-field-text" />
+                    <input type="submit" name="submit" value="Search" class="form-button-submit" />
+                </form>
             </div>
-            <div id="header_nav">
-                <ol>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/stats/games">Games</a></li>
-                    <li><a href="/stats/players">Players</a></li>
-                    <li><a href="/stats/ranks">Rankings</a></li>
-                    <li><a href="/stats/help">Help</a></li>
-                </ol>
-            </div>
+        </div>
 
+        <div id="navigation">
+            <ol>
+                <li><a href="/stats">Home</a></li>
+                <li><a href="/stats/games">Games</a></li>
+                <li><a href="/stats/players">Players</a></li>
+                <li><a href="/stats/rankings">Rankings</a></li>
+                <li><a href="/stats/ladders">Ladders</a></li>
+            </ol>
+        </div>
 

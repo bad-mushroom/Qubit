@@ -38,7 +38,7 @@ class controllers_stats_players extends core_services_controller
      */
     public function __construct()
     {
-        $this->template = new core_services_template('default');
+        $this->template = new core_services_template(Q_TEMPLATE_DIR);
 
         // Get optional parameter
         $router = new core_services_router();
@@ -74,10 +74,20 @@ class controllers_stats_players extends core_services_controller
     {
         if (!empty($this->parameter)) {
             $playersModel = new models_scores_players();
-            $players = $playersModel->getPlayers($this->parameter);
+            $player = $playersModel->getPlayers($this->parameter);
 
-            $this->template->assignVariable('players', $players);
-            $this->template->assignVariable('page_title', 'Profile: ' . $players[0][2]);
+            $scoresFragsModel = new models_scores_frags();
+            $scoresGamesModel = new models_scores_games();
+
+            $player['total_frags'] = $scoresFragsModel->countPlayerFrags($player['name']);
+            $player['total_deaths'] = $scoresFragsModel->countPlayerDeaths($player['name']);
+
+            $games = $scoresGamesModel->getGamesForPlayer($player['name']);
+            $player['total_games'] = count($games);
+
+            $this->template->assignVariable('player', $player);
+            $this->template->assignVariable('games', $games);
+            $this->template->assignVariable('page_title', 'Profile: ' . $player['name']);
             $this->template->assignVariable('page_description', '');
             $this->template->getTemplateFile('_players/players.detail.php');
         } else {

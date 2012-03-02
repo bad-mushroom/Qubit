@@ -30,59 +30,84 @@
  */
 class models_scores_players
 {
-    public function getPlayersForGame($game_id, $order = NULL)
+    public function __construct()
     {
-        $query = "SELECT * FROM players WHERE game_id = " . $game_id[0];
-
-        if ($order !== NULL) {
-            $query .= " ORDER BY" . $order;
-        }
-
         $this->db = core_services_database::getConnection();
-        $result = $this->db->query($query);
 
-        if ($result !== NULL) {
-            $players = array();
+    }
+    /**
+     * Get Players by Game
+     *
+     * Returns an array of all players for a specific game.
+     *
+     * @param   int     $game_id    Game ID
+     * @param   string  $order      Column Name
+     * @return mixed
+     */
+    public function getPlayersForGame($game_id = NULL)
+    {
+        $query = "SELECT * FROM players";
 
-            while ($row = $result->fetch_row()) {
-                $players[] = $row;
-            }
-            $result->close();
-
-            return $players;
+        if ($game_id !== NULL) {
+            $query .= " WHERE game_id = :game_id";
         }
-        return FALSE;
+
+        $data = $this->db->prepare($query);
+
+        if ($game_id !== NULL) {
+            $data->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+        }
+
+        $data->execute();
+        return $data->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getPlayers($player_name = NULL, $order = NULL)
+
+
+    /**
+     *
+     * @param int $player_name
+     * @param string $order
+     * @return mixed
+     */
+    public function getPlayers($player_name = NULL)
     {
-      if ($player_name !== NULL) {
-            $query = "SELECT * FROM players WHERE name = '" . $player_name ."' LIMIT 1";
+        $query = "SELECT DISTINCT name, model, is_bot FROM players";
+
+        if ($player_name !== NULL) {
+            $query .= " WHERE name = :player_name";
+        }
+
+        $data = $this->db->prepare($query);
+
+        if ($player_name !== NULL) {
+            $data->bindParam(':player_name', $player_name, PDO::PARAM_INT);
+        }
+
+        $data->execute();
+        $players = $data->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($player_name == NULL) {
+            return $players;
         } else {
-            $query = "SELECT * FROM players";
-            if ($order !== NULL) {
-                $query .= " ORDER BY" . $order;
-            }
+            return array_shift($players);
         }
 
-        $this->db = core_services_database::getConnection();
-        $result = $this->db->query($query);
-
-        if ($result !== NULL) {
-            $players = array();
-
-            while ($row = $result->fetch_row()) {
-                $players[] = $row;
-            }
-            $result->close();
-
-            return $players;
-        }
-        return FALSE;
     }
 
-    public function getOverAllFrags($player_name)
+    /**
+     * Remove Color Codes from Player Name
+     *
+     * @param string $name
+     * @return string
+     *
+     * @todo Replace color codes with html markup
+     */
+    public static function formatName($name)
     {
-
+        $colors = array('^0','^1','^2','^3','^4','^5','^6','^7');
+        return str_replace($colors, '', trim($name));
     }
+
+
 }

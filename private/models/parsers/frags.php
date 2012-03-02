@@ -30,40 +30,54 @@
  */
 class models_parsers_frags extends models_parsers_games
 {
+    /**
+     *
+     * @param type $game_id
+     */
     public function __construct($game_id)
     {
         $this->game_id = $game_id;
+        parent::__construct();
     }
 
+    /**
+     *
+     * @param type $line
+     */
     public function parseFrags($line)
     {
         $gi = explode(' ', $line);
         $info = array();
 
-        $info['killer_id'] = $gi[2];
-        $info['killed_id'] = $gi[3];
+        $info['fragger'] = $gi[5];
+        $info['fragged'] = $gi[7];
         $info['type'] = $gi[9];
         $info['time'] = $gi[0];
 
         $this->addFrags($info);
     }
 
+    /**
+     *
+     * @param type $info
+     * @return type
+     */
     protected function addFrags($info)
     {
 
         $query = "
             INSERT INTO frags
-                (game_id, time, player_killer_id, player_killed_id, type)
-            VALUES (?, ?, ?, ?, ?)";
+                (game_id, time, fragger, fragged, type)
+            VALUES (:game_id, :time, :fragger, :fragged, :type)";
 
-        $time = time();
+        $data = $this->db->prepare($query);
+        $data->bindParam(':game_id', $this->game_id);
+        $data->bindParam(':time', $info['time']);
+        $data->bindParam(':fragger', $info['fragger']);
+        $data->bindParam(':fragged', $info['fragged']);
+        $data->bindParam(':type', $info['type']);
 
-        $this->db = core_services_database::getConnection();
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('iiiis', $this->game_id, $time, $info['killer_id'], $info['killed_id'], $info['type']);
-        $stmt->execute();
-        $stmt->close();
+        return $data->execute();
 
-       return;
     }
 }

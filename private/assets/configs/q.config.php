@@ -2,15 +2,30 @@
 
 /**
  * ------------------------------------------------------------------------------------------------
- *  Track Item Pickups
+ *  Template Directory
  * ------------------------------------------------------------------------------------------------
- *  Values: TRUE or FALSE
- *  ------------------------------------------------------------------------------------------------
- *  Setting to FALSE will improve script performace
+ *  Values: name of directory under public_html/templates
+ * ------------------------------------------------------------------------------------------------
+ *  The template directory contains the UI (css, images, etc).
  * ------------------------------------------------------------------------------------------------
  */
 
-define('QS_TRACK_ITEMS',    FALSE);
+define('Q_TEMPLATE_DIR',    'default');
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ *  Track Item Pickups
+ * ------------------------------------------------------------------------------------------------
+ *  Values: TRUE or FALSE
+ * ------------------------------------------------------------------------------------------------
+ * It's HIGHLY recommended that you do NOT enable this as item pickups can take up a huge amount
+ * of log space. This is turn will potentially add many minutes to your parsing, eat up your
+ * reqources, and potentially cause the Earth to stop spinning. But... it's your server, do as you
+ * wish - you've been warned.
+ * ------------------------------------------------------------------------------------------------
+ */
+
+define('Q_TRACK_ITEMS',    FALSE);
 
 /**
  * ------------------------------------------------------------------------------------------------
@@ -22,20 +37,20 @@ define('QS_TRACK_ITEMS',    FALSE);
  * ------------------------------------------------------------------------------------------------
  */
 
-define('QS_TRACK_CHATS',    FALSE);
+define('Q_TRACK_CHATS',    FALSE);
 
 /**
  * ------------------------------------------------------------------------------------------------
  *  Script Execution Time
  * ------------------------------------------------------------------------------------------------
- *  Values: Miliseconds
+ *  Values: Miliseconds - 300 Miliseconds is 5 minutes
  * ------------------------------------------------------------------------------------------------
  * PHP (by default) has a 30 second limit before it will error out.  Setting this will override the
  * default setting on most servers.
  * ------------------------------------------------------------------------------------------------
  */
 
-define('QS_EXECUTION_TIME',     3000); // 300 = 5 minutes
+define('Q_EXECUTION_TIME',     300);
 
 /**
  * ------------------------------------------------------------------------------------------------
@@ -48,4 +63,4 @@ define('QS_EXECUTION_TIME',     3000); // 300 = 5 minutes
  * ------------------------------------------------------------------------------------------------
  */
 
-define('QS_APPEND_DATA',    TRUE);
+define('Q_APPEND_DATA',    FALSE);

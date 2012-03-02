@@ -31,7 +31,7 @@
  * @subpackage  stats
  * --------------------------------------------------------------------------------------------------------------------
  */
-class controllers_stats_games extends core_services_controller
+class controllers_stats_ladders extends core_services_controller
 {
     /**
      * Class Constructor
@@ -39,7 +39,7 @@ class controllers_stats_games extends core_services_controller
     public function __construct()
     {
         // Template to use
-        $this->template = new core_services_template('default');
+        $this->template = new core_services_template(Q_TEMPLATE_DIR);
 
         // Get optional parameter
         $router = new core_services_router();
@@ -55,14 +55,24 @@ class controllers_stats_games extends core_services_controller
      */
     public function index()
     {
-        $scoresModel = new models_scores_games();
-        $games = $scoresModel->getGames();
+        $playersModel = new models_scores_players();
+        $players = $playersModel->getPlayers();
 
-        // Template data
-        $this->template->assignVariable('games', $games);
-        $this->template->assignVariable('page_title', 'All Games');
+        $scoresFragsModel = new models_scores_frags();
+        $ladder = array();
+        $i = 0;
+        foreach ($players as $player) {
+            $ladder[$i]['name'] = $player['name'];
+            $ladder[$i]['total_frags'] = $scoresFragsModel->countPlayerFrags($player['name']);
+            $ladder[$i]['total_deaths'] = $scoresFragsModel->countPlayerDeaths($player['name']);
+            $ladder[$i]['total_suicides'] = $scoresFragsModel->countPlayerSuicides($player['name']);
+            $i++;
+        }
+
+        $this->template->assignVariable('ladders', $ladder);
+        $this->template->assignVariable('page_title', 'Ladder Rankings');
         $this->template->assignVariable('page_description', '');
-        $this->template->getTemplateFile('_games/games.table.php');
+        $this->template->getTemplateFile('_ladders/ladders.index.php');
     }
 
     /**
@@ -74,23 +84,6 @@ class controllers_stats_games extends core_services_controller
      */
     protected function view()
     {
-        if (!empty($this->parameter)) {
 
-            $scoresModel = new models_scores_games();
-            $games = $scoresModel->getGames($this->parameter);
-
-            $playersModel = new models_scores_players();
-            $players = $playersModel->getPlayersForGame($games[0]);
-
-            // Template data
-            $this->template->assignVariable('games', $games);
-            $this->template->assignVariable('players', $players);
-            $this->template->assignVariable('page_title', 'Game # ' . $games[0][0]);
-            $this->template->assignVariable('page_description', '');
-            $this->template->getTemplateFile('_games/games.detail.php');
-
-        } else {
-            $this->index();
-        }
     }
 }

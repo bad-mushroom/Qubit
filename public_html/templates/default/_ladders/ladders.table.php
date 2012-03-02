@@ -1,29 +1,33 @@
-<h2>Players</h2>
+<h2><?php echo $this->page_title; ?></h2>
 
-<table id="players_table" class="tablesorter">
+<table id="ladders_table" class="tablesorter">
 <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Model</th>
-        <th>Bot</th>
+        <th>Place</th>
+        <th><span class="sort">Name</span></th>
+        <th><span class="sort">Frags</span></th>
+        <th><span class="sort">Deaths</span></th>
+        <th><span class="sort">Suicides</span></th>
+        <th><span class="sort">Wins</span></th>
     </tr>
 </thead>
 <tbody>
-<?php if (count($this->players) != 0) : ?>
-    <?php foreach ($this->players as $player) : ?>
+<?php if (count($this->ladders) != 0) : $place = 1; ?>
+    <?php foreach ($this->ladders as $ladder) : ?>
 
     <tr>
-        <td><?php echo $player[5]; ?></td>
-        <td><a href='/stats/players/view/<?php echo $player[2];?>'><?php echo $player[2]; ?></a></td>
-        <td><?php echo $player[3]; ?></td>
-        <td><?php echo $player[4]; ?></td>
+        <td><?php echo $place; ?></td>
+        <td><a href='/stats/players/view/<?php echo models_scores_players::formatName($ladder['name']);?>'><?php echo models_scores_players::formatName($ladder['name']); ?></a></td>
+        <td><?php echo $ladder['total_frags']; ?></td>
+        <td><?php echo $ladder['total_deaths']; ?></td>
+        <td><?php echo $ladder['total_suicides']; ?></td>
+        <td></td>
     </tr>
 
-    <?php endforeach; ?>
+    <?php $place++; endforeach; ?>
 <?php else : ?>
     <tr>
-        <td colspan="4">No players to display</td>
+        <td colspan="5">No ladders to display</td>
     </tr>
 <?php endif; ?>
 </tbody>

@@ -30,8 +30,78 @@
  */
 class models_scores_frags
 {
+    public function __construct()
+    {
+        $this->db = core_services_database::getConnection();
+    }
+    public function countPlayerFrags($player, $game_id = NULL)
+    {
+        $query = "SELECT COUNT(id) FROM frags WHERE fragger = :player";
+
+        if ($game_id != NULL) {
+            $query .= " AND game_id = :game_id";
+        }
 
 
+        $data = $this->db->prepare($query);
+        $data->bindParam(':player', $player, PDO::PARAM_STR);
 
+        if ($game_id != NULL) {
+            $data->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+        }
+
+        $data->execute();
+        return $data->fetchColumn();
+
+
+    }
+
+    public function countPlayerDeaths($player, $game_id = NULL)
+    {
+        $query = "SELECT COUNT(id) FROM frags WHERE fragged = :player";
+
+        if ($game_id != NULL) {
+            $query .= " AND game_id = :game_id";
+        }
+
+
+        $data = $this->db->prepare($query);
+        $data->bindParam(':player', $player, PDO::PARAM_STR);
+
+        if ($game_id != NULL) {
+            $data->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+        }
+
+        $data->execute();
+        return $data->fetchColumn();
+    }
+
+    public function countPlayerSuicides($player, $game_id = NULL)
+    {
+        $query = "SELECT COUNT(id) FROM frags WHERE fragged = :player AND fragger = '<world>'";
+
+        if ($game_id != NULL) {
+            $query .= " AND game_id = :game_id";
+        }
+
+
+        $data = $this->db->prepare($query);
+        $data->bindParam(':player', $player, PDO::PARAM_STR);
+
+        if ($game_id != NULL) {
+            $data->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+        }
+
+        $data->execute();
+        return $data->fetchColumn();
+    }
+
+    public function addLadderes($player)
+    {
+        $player['total_frags'] = $this->countPlayerFrags($player['name'], $player['game_id']);
+        $player['total_deaths'] = $this->countPlayerDeaths($player['name'], $player['game_id']);
+        $player['total_suicides'] = $this->countPlayerSuicides($player['name'], $player['game_id']);
+        return $player;
+    }
 
 }

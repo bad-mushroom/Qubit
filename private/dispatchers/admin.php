@@ -54,4 +54,9 @@ class dispatchers_admin extends core_services_dispatcher
         return new controllers_admin_index();
     }
 
+    public function parse()
+    {
+        return new controllers_admin_parse();
+    }
+
 }

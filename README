@@ -1,0 +1,13 @@
+== Qubit | Quake III Log Parser & Stats Calculator ==
+
+Parses one or more game log files adding the data to a database.
+Current support for Q3 DM and prelimary support for Urban Terror.
+
+Version: 0.0.1
+License: GPL
+
+== Installation ==
+
+1. Create a database using the qubit.sql file
+2. Edit /private/assets/config/db.config.php to include
+    - Hostname, Database Name, Username, Password

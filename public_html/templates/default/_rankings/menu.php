@@ -1,1 +1,1 @@
-<h3>Players Menu</h3>
+<h3>Rankings Menu</h3>

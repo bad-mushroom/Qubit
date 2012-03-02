@@ -34,12 +34,26 @@ class core_services_database
 {
     public static function getConnection()
     {
-        $mysqli = new mysqli(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
-        if ($mysqli->connect_errno) {
-         echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-        } else {
-            return $mysqli;
+
+        switch (DB_DRIVER) {
+
+            case 'mysql':
+
+                try {
+                    $connection = new PDO("mysql:host=".DB_HOSTNAME.";dbname=".DB_DATABASE."", DB_USERNAME, DB_PASSWORD);
+                    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    $connection->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, TRUE);
+                } catch(PDOException $error) {
+
+                    echo $error->getMessage();
+                    exit();
+                }
+
+                return $connection;
+
+                break;
         }
+
     }
 }

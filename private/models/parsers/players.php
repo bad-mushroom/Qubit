@@ -33,6 +33,7 @@ class models_parsers_players extends models_parsers_games
     public function __construct($game_id)
     {
         $this->game_id = $game_id;
+        parent::__construct();
     }
 
     public function parsePlayers($line)
@@ -56,20 +57,39 @@ class models_parsers_players extends models_parsers_games
 
     protected function addPlayers($info)
     {
-        $query = "
-            INSERT INTO players
-                (game_id, player_id, name, model, is_bot)
-            VALUES (?, ?, ?, ?, ?)";
+        if ($this->checkDuplicatePlayer($this->game_id, $info['player_id']) !== TRUE) {
+            $query = "
+                INSERT INTO players
+                    (game_id, player_id, name, model, is_bot)
+                VALUES (:game_id, :player_id, :name, :model, :is_bot)";
 
-        $time = time();
+            $data = $this->db->prepare($query);
+            $data->bindParam(':game_id', $this->game_id);
+            $data->bindParam(':player_id', $info['player_id']);
+            $data->bindParam(':name', $info['name']);
+            $data->bindParam(':model', $info['model']);
+            $data->bindParam(':is_bot', $info['bot']);
 
-        $this->db = core_services_database::getConnection();
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('iissi', $this->game_id, $info['player_id'], $info['name'], $info['model'], $info['bot']);
-        $stmt->execute();
-        $stmt->close();
-
+            return $data->execute();
+        }
        return;
+    }
+
+    protected function checkDuplicatePlayer($game_id, $player_id)
+    {
+        $query = "SELECT id FROM players WHERE game_id = :game_id AND player_id = :player_id";
+
+        $data = $this->db->prepare($query);
+        $data->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+        $data->bindParam(':player_id', $player_id, PDO::PARAM_INT);
+
+        $data->execute();
+        $result = $data->fetchColumn();
+
+        if (!empty($result)) {
+            return TRUE;
+        }
+        return FALSE;
     }
 
 }

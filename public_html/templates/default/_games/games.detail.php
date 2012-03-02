@@ -1,49 +1,32 @@
 <?php $this->getTemplateFile('header.php'); ?>
 
-    <div id="navigation">
+    <div id="menu">
         <?php $this->getTemplateFile('_games/menu.php'); ?>
     </div>
 
     <div id="content">
 
         <h2><?php echo $this->page_title; ?></h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Game</th>
-                    <th>Parse Time</th>
-                    <th>Server Name</th>
-                    <th>Frag Limit</th>
-                    <th>Time Limit</th>
-                    <th>Map Name</th>
-                    <th>Version</th>
-                    <th>Game Type</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php if (count($this->games) != 0) : ?>
-                <?php foreach ($this->games as $game) : ?>
 
-                <tr>
-                    <td><a href='/stats/games/view/<?php echo $game[0];?>'><?php echo $game[0]; ?></a></td>
-                    <td><?php echo $game[1]; ?></td>
-                    <td><?php echo $game[2]; ?></td>
-                    <td><?php echo $game[3]; ?></td>
-                    <td><?php echo $game[4]; ?></td>
-                    <td><?php echo $game[5]; ?></td>
-                    <td><?php echo $game[6]; ?></td>
-                    <td><?php echo $game[7]; ?></td>
-                </tr>
+        <div class="split-left">
+            <div class="metadata">
+                <p><span class="field">Game Type:</span> <span class="value"><?php echo $this->games['gametype']; ?></span></p>
+                <p><span class="field">Game Mod:</span> <span class="value"><?php echo $this->games['gamename']; ?></span></p>
+                <p><span class="field">Frag Limit:</span> <span class="value"><?php echo $this->games['fraglimit']; ?></span> </p>
+                <p><span class="field">Time Limit:</span> <span class="value"><?php echo $this->games['timelimit']; ?></span> </p>
+                <p><span class="field">Map Name:</span> <span class="value"><?php echo $this->games['mapname']; ?></span> </p>
+                <p><span class="field">Parse Time:</span> <span class="value"><?php echo date('Y-M-d, g:i a T',$this->games['parse_time']); ?></span> </p>
+            </div>
+        </div>
 
-                <?php endforeach; ?>
-            <?php else : ?>
-                <tr>
-                    <td colspan="8">No games to display</td>
-                </tr>
+        <div class="split-right">
+            <?php if (models_meta_images::checkMapImage($this->games['mapname']) === TRUE) : ?>
+                <img src="/templates/global/images/maps/<?php echo $this->games['mapname']; ?>.jpg" class="img-map" />
             <?php endif; ?>
-            </tbody>
-        </table>
-<?php $this->getTemplateFile('_players/players.table.php'); ?>
+        </div>
+
+        <?php $this->getTemplateFile('_games/players.table.php'); ?>
+
     </div>
 
 <?php $this->getTemplateFile('footer.php'); ?>

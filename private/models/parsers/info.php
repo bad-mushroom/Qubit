@@ -30,6 +30,11 @@
  */
 class models_parsers_info extends models_parsers_games
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function parseInfo($line)
     {
         $gi = explode('\\', $line);
@@ -48,19 +53,20 @@ class models_parsers_info extends models_parsers_games
     {
         $query = "
             INSERT INTO games
-                (parse_time, hostname, fraglimit, timelimit, mapname, version, gametype)
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
+                (parse_time, hostname, fraglimit, timelimit, mapname, version, gametype, gamename)
+            VALUES (:parse_time, :hostname, :fraglimit, :timelimit, :mapname, :version, :gametype, :gamename)";
 
-        $time = time();
-
-        $this->db = core_services_database::getConnection();
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('isiissi', $time, $info['sv_hostname'], $info['fraglimit'], $info['timelimit'],
-                $info['mapname'], $info['version'], $info['g_gametype']);
-        $stmt->execute();
-        $game_id = $stmt->insert_id;
-        $stmt->close();
-
-       return $game_id;
+        $parse_time = time();
+        $data = $this->db->prepare($query);
+        $data->bindParam(':parse_time', $parse_time);
+        $data->bindParam(':hostname', $info['sv_hostname']);
+        $data->bindParam(':fraglimit', $info['fraglimit']);
+        $data->bindParam(':timelimit', $info['timelimit']);
+        $data->bindParam(':mapname', $info['mapname']);
+        $data->bindParam(':version', $info['version']);
+        $data->bindParam(':gametype', $info['g_gametype']);
+        $data->bindParam(':gamename', $info['gamename']);
+        $data->execute();
+        return $this->db->lastInsertId();
     }
 }

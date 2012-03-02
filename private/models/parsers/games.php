@@ -32,7 +32,8 @@ class models_parsers_games
 {
     public function __construct()
     {
-        set_time_limit(QS_EXECUTION_TIME);
+        set_time_limit(Q_EXECUTION_TIME);
+        $this->db = core_services_database::getConnection();
     }
 
     public function getGames($contents)
@@ -88,7 +89,7 @@ class models_parsers_games
                     break;
 
                 case 'Item':
-                    if (QS_TRACK_ITEMS !== FALSE) {
+                    if (Q_TRACK_ITEMS !== FALSE) {
                         $item = new models_parsers_items($this->game_id);
                         $item->parseItems($line);
                     }
@@ -100,7 +101,7 @@ class models_parsers_games
                     break;
 
                 case 'say':
-                    if (QS_TRACK_CHATS !== FALSE) {
+                    if (Q_TRACK_CHATS !== FALSE) {
                         $chat = new models_parsers_chat($this->game_id);
                         $chat->parseChat($line);
                     }

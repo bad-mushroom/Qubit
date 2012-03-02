@@ -1,12 +1,12 @@
 <?php $this->getTemplateFile('header.php'); ?>
 
-    <div id="navigation">
-        <?php $this->getTemplateFile('_players/menu.php'); ?>
+    <div id="menu">
+        <?php $this->getTemplateFile('_games/menu.php'); ?>
     </div>
 
     <div id="content">
-
-<?php $this->getTemplateFile('_players/players.table.php'); ?>
+        <h2><?php echo $this->page_title; ?></h2>
+        <?php $this->getTemplateFile('_games/games.table.php'); ?>
     </div>
 
 <?php $this->getTemplateFile('footer.php'); ?>
