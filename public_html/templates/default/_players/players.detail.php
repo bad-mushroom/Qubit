@@ -17,9 +17,7 @@
         </div>
 
         <div class="split-right">
-            <?php if (models_meta_images::checkModelImage($this->player['model']) === TRUE) : ?>
-                <img src="/templates/global/images/models/icons/<?php echo strtolower($this->player['model']); ?>_default.png" class="img-model-icon" />
-            <?php endif; ?>
+
         </div>
 
         <h2>Games Played</h2>
