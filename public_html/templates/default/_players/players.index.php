@@ -5,6 +5,7 @@
     </div>
 
     <div id="content">
+        <h2><?php echo $this->page_title; ?></h2>
         <?php $this->getTemplateFile('_players/players.table.php'); ?>
     </div>
 
