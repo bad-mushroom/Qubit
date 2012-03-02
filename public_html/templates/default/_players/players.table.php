@@ -1,5 +1,3 @@
-<h2>Players</h2>
-
 <table id="players_table" class="tablesorter">
 <thead>
     <tr>
