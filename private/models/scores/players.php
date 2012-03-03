@@ -109,5 +109,4 @@ class models_scores_players
         return str_replace($colors, '', trim($name));
     }
 
-
 }

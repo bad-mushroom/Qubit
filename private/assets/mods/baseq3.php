@@ -30,11 +30,24 @@
  */
 class assets_mods_baseq3 implements models_interfaces_imod
 {
+    /**
+     * Get Mod Name
+     *
+     * @return string
+     */
     public function getModName()
     {
         return 'Quake III Arena';
     }
 
+    /**
+     * Get Game Type
+     *
+     * Returns the game type based on it's ID
+     *
+     * @param int $gametype
+     * @return string
+     */
     public function getGameType($gametype)
     {
         $mod_game_types = array(

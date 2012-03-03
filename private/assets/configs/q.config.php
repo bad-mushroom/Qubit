@@ -63,4 +63,4 @@ define('Q_EXECUTION_TIME',     300);
  * ------------------------------------------------------------------------------------------------
  */
 
-define('Q_APPEND_DATA',    FALSE);
+define('Q_APPEND_DATA',    TRUE);

@@ -25,84 +25,39 @@
  * --------------------------------------------------------------------------------------------------------------------
  * @package     Qubit
  * @category    models
- * @subpackage  scores
+ * @subpackage  search
  * --------------------------------------------------------------------------------------------------------------------
  */
-class models_scores_frags
+class models_search_results
 {
     public function __construct()
     {
         $this->db = core_services_database::getConnection();
     }
 
-    public function countPlayerFrags($player, $game_id = NULL)
+    public function findPlayers($search)
     {
-        $query = "SELECT COUNT(id) FROM frags WHERE fragger = :player";
+        $query = "SELECT * FROM players WHERE name LIKE :search";
 
-        if ($game_id != NULL) {
-            $query .= " AND game_id = :game_id";
-        }
-
-
+        $str = "%$search%";
         $data = $this->db->prepare($query);
-        $data->bindParam(':player', $player, PDO::PARAM_STR);
-
-        if ($game_id != NULL) {
-            $data->bindParam(':game_id', $game_id, PDO::PARAM_INT);
-        }
-
+        $data->bindParam(':search', $str);
         $data->execute();
-        return $data->fetchColumn();
 
+        return $data->fetchAll(PDO::FETCH_ASSOC);
 
     }
 
-    public function countPlayerDeaths($player, $game_id = NULL)
+    public function findGameMods($search)
     {
-        $query = "SELECT COUNT(id) FROM frags WHERE fragged = :player";
+        $query = "SELECT * FROM games WHERE gamename LIKE :search";
 
-        if ($game_id != NULL) {
-            $query .= " AND game_id = :game_id";
-        }
-
-
+        $str = "%$search%";
         $data = $this->db->prepare($query);
-        $data->bindParam(':player', $player, PDO::PARAM_STR);
-
-        if ($game_id != NULL) {
-            $data->bindParam(':game_id', $game_id, PDO::PARAM_INT);
-        }
-
+        $data->bindParam(':search', $str);
         $data->execute();
-        return $data->fetchColumn();
+
+        return $data->fetchAll(PDO::FETCH_ASSOC);
+
     }
-
-    public function countPlayerSuicides($player, $game_id = NULL)
-    {
-        $query = "SELECT COUNT(id) FROM frags WHERE fragged = :player AND fragger = '<world>'";
-
-        if ($game_id != NULL) {
-            $query .= " AND game_id = :game_id";
-        }
-
-
-        $data = $this->db->prepare($query);
-        $data->bindParam(':player', $player, PDO::PARAM_STR);
-
-        if ($game_id != NULL) {
-            $data->bindParam(':game_id', $game_id, PDO::PARAM_INT);
-        }
-
-        $data->execute();
-        return $data->fetchColumn();
-    }
-
-    public function addLadderes($player)
-    {
-        $player['total_frags'] = $this->countPlayerFrags($player['name'], $player['game_id']);
-        $player['total_deaths'] = $this->countPlayerDeaths($player['name'], $player['game_id']);
-        $player['total_suicides'] = $this->countPlayerSuicides($player['name'], $player['game_id']);
-        return $player;
-    }
-
 }

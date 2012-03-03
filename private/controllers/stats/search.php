@@ -55,21 +55,44 @@ class controllers_stats_search extends core_services_controller
      */
     public function index()
     {
+        if (!empty($_POST['submit']) AND (!empty($_POST['search']))) {
 
-        $this->template->assignVariable('page_title', 'Player Search');
-        $this->template->assignVariable('page_description', '');
+            $searchModel = new models_search_results();
+
+            // Defaults
+            $this->template->assignVariable('page_title', 'Search');
+            $this->template->assignVariable('table', NULL);
+
+            switch ($_POST['context']) {
+
+                case 'players':
+
+                    $result = $searchModel->findPlayers($_POST['search']);
+
+                    $this->template->assignVariable('players', $result);
+                    $this->template->assignVariable('table', '_players/players.table.php');
+                    $this->template->assignVariable('page_title', 'Player Search Results');
+                    $this->template->assignVariable('page_description', '');
+
+                    break;
+
+                case 'game_mods':
+
+                    $result = $searchModel->findGameMods($_POST['search']);
+
+                    $this->template->assignVariable('games', $result);
+                    $this->template->assignVariable('page_title', 'Game Mod Search Results');
+                    $this->template->assignVariable('page_description', '');
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         $this->template->getTemplateFile('_search/search.index.php');
-    }
-
-    /**
-     * View Method
-     *
-     * Displays a single entity. Requires that a parameter is passed in the URI.
-     *
-     * @return  void
-     */
-    protected function results()
-    {
 
     }
+
 }
