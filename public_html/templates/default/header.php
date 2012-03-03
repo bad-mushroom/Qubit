@@ -21,7 +21,7 @@
             $("table").tablesorter({
                 sortList: [[0,0]]
             });
-            $("#ladderstable").tablesorter( {sortList: [[3,1]]} );
+            
         });
     </script>
 
@@ -33,7 +33,12 @@
             <h1>Qubit | Log Parser &amp; Stats Calculator</h1>
             <div id="search">
                 <form action="/stats/search" method="post" name="search">
-                    <input type="text" name="search" value="Player Search" class="form-field-text" />
+                    <select name="context" class="form-field-text-small">
+                        <option value="">--- Choose ---</option>
+                        <option value="players">Players</option>
+                        <option value="game_mods">Game Mods</option>
+                    </select>
+                    <input type="text" name="search" class="form-field-text" />
                     <input type="submit" name="submit" value="Search" class="form-button-submit" />
                 </form>
             </div>

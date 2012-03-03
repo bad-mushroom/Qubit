@@ -6,7 +6,7 @@
 
     <div id="content">
         <h2><?php echo $this->page_title; ?></h2>
-        <?php $this->getTemplateFile('_search/players.table.php'); ?>
+        <?php $this->getTemplateFile($this->table); ?>
     </div>
 
 <?php $this->getTemplateFile('footer.php'); ?>

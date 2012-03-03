@@ -89,6 +89,7 @@ h1 {
     padding-top: 30px;
     float: left;
     clear: both;
+
 }
 
 h2 {
@@ -165,11 +166,20 @@ tfoot td {
 
 /* --- FORMS ------------------------------------------------------------------------------------------------------- */
 
+.form-field-text-small {
+    width: 130px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 0.9em;
+}
+
 .form-field-text {
     width: 250px;
     border: 1px solid #333;
     border-radius: 5px;
     padding: 5px;
+        font-size: 0.9em;
 }
 
 .form-button-submit {
@@ -177,6 +187,7 @@ tfoot td {
     background: #f0f0f0;
     border-radius: 5px;
     border: 1px solid #333;
+        font-size: 0.9em;
 }
 
 /* --- MISC -------------------------------------------------------------------------------------------------------- */
