@@ -42,8 +42,8 @@ class controllers_stats_games extends core_services_controller
         $this->template = new core_services_template(Q_TEMPLATE_DIR);
 
         // Get optional parameter
-        $router = new core_services_router();
-        $this->parameter = $router->getParameters(0);
+        $this->router = new core_services_router();
+        $this->parameter = $this->router->getParameters(0);
 
         parent::__construct();
     }
@@ -55,11 +55,22 @@ class controllers_stats_games extends core_services_controller
      */
     public function index()
     {
+
         $scoresModel = new models_scores_games();
         $games = $scoresModel->getGames();
+        $total_games = count($games);
+
+        $pagerModel = new models_database_pager();
+        $pagenumber = $pagerModel->getPageNumber();
+
+        $results = $pagerModel->pageResults($games,$pagenumber);
+
+        $pages = ceil($total_games / Q_DATA_PER_PAGE);
 
         // Template data
-        $this->template->assignVariable('games', $games);
+        $this->template->assignVariable('games', $results);
+        $this->template->assignVariable('total_pages', $pages);
+        $this->template->assignVariable('current_page', $pagenumber);
         $this->template->assignVariable('page_title', 'All Games');
         $this->template->assignVariable('page_description', '');
         $this->template->getTemplateFile('_games/games.index.php');
@@ -79,12 +90,15 @@ class controllers_stats_games extends core_services_controller
             $scoresModel = new models_scores_games();
             $game = $scoresModel->getGames($this->parameter);
 
+            $game['gamename_mod'] = $game['gamename'];
             if (class_exists('assets_mods_' . $game['gamename']) !== FALSE) {
                 $class = 'assets_mods_'.$game['gamename'];
                 $mod = new $class();
                 $game['gametype'] = $mod->getGameType($game['gametype']);
                 $game['gamename'] = $mod->getModName();
             }
+
+
 
             $playersModel = new models_scores_players();
             $players = $playersModel->getPlayersForGame($game['id']);

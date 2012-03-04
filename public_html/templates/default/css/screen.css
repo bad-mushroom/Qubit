@@ -150,6 +150,20 @@ td {
     padding: 5px;
 }
 
+td.highlite {
+    
+    text-align: center;
+    background: #b13130;
+    font-weight: bold;
+}
+
+th.highlite {
+    color: #fff;
+    text-align: center;
+    background: #7b2221;
+    font-weight: bold;
+}
+
 tfoot td {
 
     font-size: 0.8em;

@@ -19,7 +19,7 @@
 
 /**
  * --------------------------------------------------------------------------------------------------------------------
- * Qubit Player Statistics Controller Class
+ * Qubit Game Statistics Controller Class
  * --------------------------------------------------------------------------------------------------------------------
  * Controller classes act as an interface between the template engine and the data models, performing basic logic and
  * template variable assignment.
@@ -28,18 +28,16 @@
  * --------------------------------------------------------------------------------------------------------------------
  * @package     Qubit
  * @category    controllers
- * @subpackage  stats
+ * @subpackage  admin
  * --------------------------------------------------------------------------------------------------------------------
  */
-class controllers_stats_players extends core_services_controller
+class controllers_admin_parse extends core_services_controller
 {
     /**
      * Class Constructor
      */
     public function __construct()
     {
-        $this->template = new core_services_template(Q_TEMPLATE_DIR);
-
         // Get optional parameter
         $router = new core_services_router();
         $this->parameter = $router->getParameters(0);
@@ -54,53 +52,7 @@ class controllers_stats_players extends core_services_controller
      */
     public function index()
     {
-        $playersModel = new models_scores_players();
-        $players = $playersModel->getPlayers();
-        $total_players = count($players);
-
-        $pagerModel = new models_database_pager();
-        $pagenumber = $pagerModel->getPageNumber();
-
-        $results = $pagerModel->pageResults($players, $pagenumber);
-        $pages = ceil($total_players / Q_DATA_PER_PAGE);
-
-        $this->template->assignVariable('players', $results);
-        $this->template->assignVariable('total_pages', $pages);
-        $this->template->assignVariable('current_page', $pagenumber);
-        $this->template->assignVariable('page_title', 'All Players');
-        $this->template->assignVariable('page_description', '');
-        $this->template->getTemplateFile('_players/players.index.php');
+        
     }
 
-    /**
-     * View Method
-     *
-     * Displays a single entity. Requires that a parameter is passed in the URI.
-     *
-     * @return  void
-     */
-    protected function view()
-    {
-        if (!empty($this->parameter)) {
-            $playersModel = new models_scores_players();
-            $player = $playersModel->getPlayers($this->parameter);
-
-            $scoresFragsModel = new models_scores_frags();
-            $scoresGamesModel = new models_scores_games();
-
-            $player['total_frags'] = $scoresFragsModel->countPlayerFrags($player['name']);
-            $player['total_deaths'] = $scoresFragsModel->countPlayerDeaths($player['name']);
-
-            $games = $scoresGamesModel->getGamesForPlayer($player['name']);
-            $player['total_games'] = count($games);
-
-            $this->template->assignVariable('player', $player);
-            $this->template->assignVariable('games', $games);
-            $this->template->assignVariable('page_title', 'Profile: ' . $player['name']);
-            $this->template->assignVariable('page_description', '');
-            $this->template->getTemplateFile('_players/players.detail.php');
-        } else {
-            $this->index();
-        }
-    }
 }

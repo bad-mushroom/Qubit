@@ -96,6 +96,8 @@ class models_parsers_games
                     break;
 
                 case 'ClientUserinfoChanged':
+              //  case 'ClientUserinfo':
+
                     $player = new models_parsers_players($this->game_id);
                     $player->parsePlayers($line);
                     break;

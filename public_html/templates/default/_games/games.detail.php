@@ -20,7 +20,7 @@
         </div>
 
         <div class="split-right">
-
+            <img src="/templates/global/images/maps/<?php echo $this->games['gamename_mod']; ?>/<?php echo $this->games['mapname']; ?>.jpg" class="img-map" />
         </div>
 
         <?php $this->getTemplateFile('_games/players.table.php'); ?>

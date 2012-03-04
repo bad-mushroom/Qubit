@@ -19,49 +19,60 @@
 
 /**
  * --------------------------------------------------------------------------------------------------------------------
- * Qubit Log File Class
+ * Qubit Database Results Pager Class
  * --------------------------------------------------------------------------------------------------------------------
- * Configuration class for game mod Quake III Arena.
+ *
  * --------------------------------------------------------------------------------------------------------------------
  * @package     Qubit
- * @category    assets
- * @subpackage  mods
+ * @category    models
+ * @subpackage  database
  * --------------------------------------------------------------------------------------------------------------------
  */
-class assets_mods_baseq3 extends assets_mods_mods implements models_interfaces_imod
+class models_database_pager
 {
-
     /**
-     * Get Mod Name
-     *
-     * @return string
+     * Class Constructor
      */
-    public function getModName()
+    public function __construct()
     {
-        return 'Quake III Arena';
+        $this->db = core_services_database::getConnection();
     }
 
     /**
-     * Get Game Type
+     * Return a segment of an array
      *
-     * Returns the game type based on it's ID
-     *
-     * @param int $gametype
-     * @return string
+     * @param array $results
+     * @param int $pagenum
+     * @return array
      */
-    public function getGameType($gametype)
+    public function pageResults($results, $page)
     {
-        $mod_game_types = array(
-            '0'         => 'Free For All',
-            '1'         => 'Tournament 1-on-1',
-            '2'         => 'Single Player',
-            '3'         => 'Team Deathmatch',
-            '4'         => 'Capture the Flag');
+        $page--;
+        //$page = $this->getPageNumber();
+        $slice_start = $page * Q_DATA_PER_PAGE;
+        $paged = array_slice($results, $slice_start, Q_DATA_PER_PAGE,  TRUE);
 
-        if (array_key_exists($gametype, $mod_game_types)) {
-            return $mod_game_types[$gametype];
+        return $paged;
+    }
+
+    /**
+     * Get Current Page Number
+     *
+     * @return int
+     */
+    public  function getPageNumber()
+    {
+        $router = new core_services_router();
+        $params = $router->getRoutes('action');
+        if ($params == 'page') {
+            $pagenum = $router->getParameters('0');
+
+            if (!empty($pagenum)) {
+                return $pagenum;
+            }
+
         }
+        return 1;
     }
-
 
 }

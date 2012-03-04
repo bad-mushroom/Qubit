@@ -64,3 +64,16 @@ define('Q_EXECUTION_TIME',     300);
  */
 
 define('Q_APPEND_DATA',    TRUE);
+
+/**
+ * ------------------------------------------------------------------------------------------------
+ *  Table Rows PAger
+ * ------------------------------------------------------------------------------------------------
+ *  Values: TRUE or FALSE
+ * ------------------------------------------------------------------------------------------------
+ * Setting value to FALSE will cause the stats to be purged from the database before each import.
+ * TRUE will not purge the data and add to the existing stats instead.
+ * ------------------------------------------------------------------------------------------------
+ */
+
+define('Q_DATA_PER_PAGE',   15);

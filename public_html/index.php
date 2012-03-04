@@ -46,8 +46,6 @@
     define('Q_PUBLIC_DIR', str_replace('\\', '/', dirname(__FILE__)));
     define('Q_PRIVATE_DIR', dirname(Q_PUBLIC_DIR) . DS . 'private');
 
-    define('Q_CURRENT_URI', $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
-
     // Set Server Time Zone
     date_default_timezone_set('America/Detroit');
 

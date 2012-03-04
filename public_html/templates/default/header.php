@@ -21,7 +21,7 @@
             $("table").tablesorter({
                 sortList: [[0,0]]
             });
-            
+
         });
     </script>
 
@@ -36,7 +36,6 @@
                     <select name="context" class="form-field-text-small">
                         <option value="">--- Choose ---</option>
                         <option value="players">Players</option>
-                        <option value="game_mods">Game Mods</option>
                     </select>
                     <input type="text" name="search" class="form-field-text" />
                     <input type="submit" name="submit" value="Search" class="form-button-submit" />

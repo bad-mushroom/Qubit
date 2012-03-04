@@ -19,49 +19,43 @@
 
 /**
  * --------------------------------------------------------------------------------------------------------------------
- * Qubit Log File Class
+ * Qubit Admin Dispatcher Class
  * --------------------------------------------------------------------------------------------------------------------
- * Configuration class for game mod Quake III Arena.
+ * Dispatchers act as a factory-like class by instantiating controller objects.
  * --------------------------------------------------------------------------------------------------------------------
  * @package     Qubit
- * @category    assets
- * @subpackage  mods
+ * @category    dispatchers
+ * @subpackage  files
  * --------------------------------------------------------------------------------------------------------------------
  */
-class assets_mods_baseq3 extends assets_mods_mods implements models_interfaces_imod
+class dispatchers_admin extends core_services_dispatcher
 {
-
     /**
-     * Get Mod Name
+	 * Class Constructor
      *
-     * @return string
-     */
-    public function getModName()
+     * Checks current logged in session for access to admin onjects. Redirects to login form if user
+     * does not have access.
+     *
+     * Put additional code before parent::__constructor() is called or it will be ignored.
+	 */
+    public function __construct()
     {
-        return 'Quake III Arena';
+        parent::__construct();
     }
 
     /**
-     * Get Game Type
+     * Index Controller
      *
-     * Returns the game type based on it's ID
-     *
-     * @param int $gametype
-     * @return string
+     * This method is called if a controller is requested in the URL.
      */
-    public function getGameType($gametype)
+    public function index()
     {
-        $mod_game_types = array(
-            '0'         => 'Free For All',
-            '1'         => 'Tournament 1-on-1',
-            '2'         => 'Single Player',
-            '3'         => 'Team Deathmatch',
-            '4'         => 'Capture the Flag');
-
-        if (array_key_exists($gametype, $mod_game_types)) {
-            return $mod_game_types[$gametype];
-        }
+        return NULL;
     }
 
+    public function images()
+    {
+        return new controllers_files_images();
+    }
 
 }

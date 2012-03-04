@@ -1,13 +1,48 @@
-== Qubit | Quake III Log Parser & Stats Calculator ==
+== Qubit | Quake III Log Parser & Statistics Calculator ==
 
 Parses one or more game log files adding the data to a database.
-Current support for Q3 DM and prelimary support for Urban Terror.
+Current support for Q3 DM and preliminary support for Urban Terror.
 
 Version: 0.0.1
 License: GPL
+
+
+== Requirements ==
+
+- PHP 5.2 or greater
+- MySQL Database
+- Apache w/mod_rewrite (should work on any but that's what I've been testing on)
+
 
 == Installation ==
 
 1. Create a database using the qubit.sql file
 2. Edit /private/assets/config/db.config.php to include
     - Hostname, Database Name, Username, Password
+3. You'll also need to make /private/assets/archive writable for log archiving
+
+
+== Use ==
+
+Once installed on your web server, visit http://yoursite.com/stats
+
+To run the parses
+
+First, look at the options in /private/assets/configs/q.config.php to see if there's
+anything you want to change.
+
+1. Copy games.log file (name and extension are irrelevant) to /private/assets/logs
+2. visit yoursite.com/admin/parser
+
+NOTE: This is alpha-level code and there is no security written in to who can run
+the parser.
+
+
+== To Do's and Wish List ==
+
+ - Add security to the parser controller
+ - Finish Urban Terror Mod config
+ - Rankings algorithm
+ - Finish Player search
+ - Log import scheduling (cron?)
+ - Auto Log retrieval (FTP, Local Directory)
