@@ -30,12 +30,23 @@
  */
 class models_parsers_games
 {
+    /**
+     * Class Constructor 
+     */
     public function __construct()
     {
         set_time_limit(Q_EXECUTION_TIME);
         $this->db = core_services_database::getConnection();
     }
 
+    /**
+     * Get Games
+     * 
+     * Finds start and end locations for each game.
+     * 
+     * @param type $contents
+     * @return string|boolean 
+     */
     public function getGames($contents)
     {
         $starts = array();
@@ -60,6 +71,15 @@ class models_parsers_games
         return FALSE;
     }
 
+    /**
+     * Parse Games
+     * 
+     * Takes the start/end game section of log file and creates an array for parsing.
+     * 
+     * @param type $games
+     * @param type $content
+     * @return void 
+     */
     public function parseGame($games, $content)
     {
         foreach ($games as $game) {
@@ -69,6 +89,14 @@ class models_parsers_games
         return;
     }
 
+    /**
+     * Parse Game Data
+     * 
+     * @param type $content
+     * @param type $start
+     * @param type $end 
+     * @return void
+     */
     protected function parseGameData($content, $start, $end)
     {
         for ($i = $start; $i < $end; $i++) {
@@ -96,8 +124,6 @@ class models_parsers_games
                     break;
 
                 case 'ClientUserinfoChanged':
-              //  case 'ClientUserinfo':
-
                     $player = new models_parsers_players($this->game_id);
                     $player->parsePlayers($line);
                     break;
@@ -114,6 +140,7 @@ class models_parsers_games
             }
 
         }
+        return;
     }
 
 }

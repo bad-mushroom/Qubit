@@ -6,7 +6,7 @@
  * ------------------------------------------------------------------------------------------------
  *  Values: name of directory under public_html/templates
  * ------------------------------------------------------------------------------------------------
- *  The template directory contains the UI (css, images, etc).
+ *  The template directory that contains the UI (css, images, etc).
  * ------------------------------------------------------------------------------------------------
  */
 
@@ -19,7 +19,7 @@ define('Q_TEMPLATE_DIR',    'default');
  *  Values: TRUE or FALSE
  * ------------------------------------------------------------------------------------------------
  * It's HIGHLY recommended that you do NOT enable this as item pickups can take up a huge amount
- * of log space. This is turn will potentially add many minutes to your parsing, eat up your
+ * of log space. This in turn will potentially add many minutes to your parsing, eat up your
  * reqources, and potentially cause the Earth to stop spinning. But... it's your server, do as you
  * wish - you've been warned.
  * ------------------------------------------------------------------------------------------------

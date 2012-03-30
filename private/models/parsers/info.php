@@ -30,11 +30,20 @@
  */
 class models_parsers_info extends models_parsers_games
 {
+    /**
+     * Class Constructor 
+     */
     public function __construct()
     {
         parent::__construct();
     }
 
+    /**
+     * Parse Game Info
+     * 
+     * @param type $line
+     * @return type 
+     */
     public function parseInfo($line)
     {
         $gi = explode('\\', $line);
@@ -49,6 +58,14 @@ class models_parsers_info extends models_parsers_games
         return $this->addInfo($info);
     }
 
+    /**
+     * Add Game Info
+     * 
+     * Insert game info into database.
+     * 
+     * @param type $info
+     * @return int  Last Insert ID 
+     */
     protected function addInfo($info)
     {
         $query = "
@@ -58,6 +75,7 @@ class models_parsers_info extends models_parsers_games
 
         $parse_time = time();
         $data = $this->db->prepare($query);
+        
         $data->bindParam(':parse_time', $parse_time);
         $data->bindParam(':hostname', $info['sv_hostname']);
         $data->bindParam(':fraglimit', $info['fraglimit']);

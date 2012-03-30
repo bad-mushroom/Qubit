@@ -31,7 +31,7 @@
 class models_parsers_frags extends models_parsers_games
 {
     /**
-     *
+     * Class Constructor
      * @param type $game_id
      */
     public function __construct($game_id)
@@ -43,6 +43,7 @@ class models_parsers_frags extends models_parsers_games
     /**
      *
      * @param type $line
+     * @return void
      */
     public function parseFrags($line)
     {
@@ -55,10 +56,15 @@ class models_parsers_frags extends models_parsers_games
         $info['time'] = $gi[0];
 
         $this->addFrags($info);
+        
+        return;
     }
 
     /**
-     *
+     * Add Frag
+     * 
+     * Inserts frag into database
+     * 
      * @param type $info
      * @return type
      */
@@ -71,6 +77,7 @@ class models_parsers_frags extends models_parsers_games
             VALUES (:game_id, :time, :fragger, :fragged, :type)";
 
         $data = $this->db->prepare($query);
+        
         $data->bindParam(':game_id', $this->game_id);
         $data->bindParam(':time', $info['time']);
         $data->bindParam(':fragger', $info['fragger']);

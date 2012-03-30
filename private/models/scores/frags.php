@@ -30,11 +30,20 @@
  */
 class models_scores_frags
 {
+    /**
+     * 
+     */
     public function __construct()
     {
         $this->db = core_services_database::getConnection();
     }
 
+    /**
+     *
+     * @param type $player
+     * @param type $game_id
+     * @return type 
+     */
     public function countPlayerFrags($player, $game_id = NULL)
     {
         $query = "SELECT COUNT(id) FROM frags WHERE fragger = :player";
@@ -43,7 +52,6 @@ class models_scores_frags
             $query .= " AND game_id = :game_id";
         }
 
-
         $data = $this->db->prepare($query);
         $data->bindParam(':player', $player, PDO::PARAM_STR);
 
@@ -54,9 +62,14 @@ class models_scores_frags
         $data->execute();
         return $data->fetchColumn();
 
-
     }
 
+    /**
+     *
+     * @param type $player
+     * @param type $game_id
+     * @return type 
+     */
     public function countPlayerDeaths($player, $game_id = NULL)
     {
         $query = "SELECT COUNT(id) FROM frags WHERE fragged = :player";
@@ -65,7 +78,6 @@ class models_scores_frags
             $query .= " AND game_id = :game_id";
         }
 
-
         $data = $this->db->prepare($query);
         $data->bindParam(':player', $player, PDO::PARAM_STR);
 
@@ -77,6 +89,12 @@ class models_scores_frags
         return $data->fetchColumn();
     }
 
+    /**
+     *
+     * @param type $player
+     * @param type $game_id
+     * @return type 
+     */
     public function countPlayerSuicides($player, $game_id = NULL)
     {
         $query = "SELECT COUNT(id) FROM frags WHERE fragged = :player AND fragger = '<world>'";
@@ -85,7 +103,6 @@ class models_scores_frags
             $query .= " AND game_id = :game_id";
         }
 
-
         $data = $this->db->prepare($query);
         $data->bindParam(':player', $player, PDO::PARAM_STR);
 
@@ -97,6 +114,11 @@ class models_scores_frags
         return $data->fetchColumn();
     }
 
+    /**
+     *
+     * @param type $player
+     * @return type 
+     */
     public function addLadderes($player)
     {
         $player['total_frags'] = $this->countPlayerFrags($player['name'], $player['game_id']);

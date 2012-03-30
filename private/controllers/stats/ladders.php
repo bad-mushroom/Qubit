@@ -56,6 +56,7 @@ class controllers_stats_ladders extends core_services_controller
     public function index()
     {
         $this->frags();
+        return;
     }
 
     /**
@@ -94,6 +95,7 @@ class controllers_stats_ladders extends core_services_controller
         $this->template->assignVariable('page_title', 'Ladder Rankings: Most Frags');
         $this->template->assignVariable('page_description', '');
         $this->template->getTemplateFile('_ladders/ladders.index.php');
+        return;
     }
 
     protected function deaths()
@@ -125,6 +127,7 @@ class controllers_stats_ladders extends core_services_controller
         $this->template->assignVariable('page_title', 'Ladder Rankings: Most Deaths');
         $this->template->assignVariable('page_description', '');
         $this->template->getTemplateFile('_ladders/ladders.index.php');
+        return;
     }
 
     protected function suicides()
@@ -156,5 +159,6 @@ class controllers_stats_ladders extends core_services_controller
         $this->template->assignVariable('page_title', 'Ladder Rankings: Most Suicidal');
         $this->template->assignVariable('page_description', '');
         $this->template->getTemplateFile('_ladders/ladders.index.php');
+        return;
     }
 }

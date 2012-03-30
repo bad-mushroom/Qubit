@@ -70,6 +70,7 @@ class controllers_stats_players extends core_services_controller
         $this->template->assignVariable('page_title', 'All Players');
         $this->template->assignVariable('page_description', '');
         $this->template->getTemplateFile('_players/players.index.php');
+        return;
     }
 
     /**
@@ -102,5 +103,6 @@ class controllers_stats_players extends core_services_controller
         } else {
             $this->index();
         }
+        return;
     }
 }

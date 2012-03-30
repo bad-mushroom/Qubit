@@ -74,6 +74,8 @@ class controllers_stats_games extends core_services_controller
         $this->template->assignVariable('page_title', 'All Games');
         $this->template->assignVariable('page_description', '');
         $this->template->getTemplateFile('_games/games.index.php');
+        
+        return;
     }
 
     /**
@@ -86,19 +88,16 @@ class controllers_stats_games extends core_services_controller
     protected function view()
     {
         if (!empty($this->parameter)) {
-
             $scoresModel = new models_scores_games();
             $game = $scoresModel->getGames($this->parameter);
-
             $game['gamename_mod'] = $game['gamename'];
+            
             if (class_exists('assets_mods_' . $game['gamename']) !== FALSE) {
                 $class = 'assets_mods_'.$game['gamename'];
                 $mod = new $class();
                 $game['gametype'] = $mod->getGameType($game['gametype']);
                 $game['gamename'] = $mod->getModName();
             }
-
-
 
             $playersModel = new models_scores_players();
             $players = $playersModel->getPlayersForGame($game['id']);
@@ -119,5 +118,7 @@ class controllers_stats_games extends core_services_controller
         } else {
             $this->index();
         }
+        
+        return;
     }
 }

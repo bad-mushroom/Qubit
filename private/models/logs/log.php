@@ -31,7 +31,7 @@
 class models_logs_log
 {
     /**
-     *
+     * Class Constructor
      */
     public function __construct()
     {

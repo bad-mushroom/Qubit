@@ -66,9 +66,8 @@
     $router = new core_services_router();
     $routes = $router->getRoutes();
 
-
     define('Q_CURRENT_URI', $routes['dispatcher'] . '/' . $routes['controller']);
-//echo Q_CURRENT_URI; exit();
+
 	$d = 'dispatchers_' . $routes['dispatcher'];
     $dispatcher = NULL;
     if (class_exists($d)) {

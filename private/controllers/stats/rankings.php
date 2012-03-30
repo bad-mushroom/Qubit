@@ -38,7 +38,7 @@ class controllers_stats_rankings extends core_services_controller
      */
     public function __construct()
     {
-        // Template to use
+        // Template Object
         $this->template = new core_services_template(Q_TEMPLATE_DIR);
 
         // Get optional parameter
@@ -55,10 +55,11 @@ class controllers_stats_rankings extends core_services_controller
      */
     public function index()
     {
-
         $this->template->assignVariable('page_title', 'Overall Rankings');
         $this->template->assignVariable('page_description', '');
         $this->template->getTemplateFile('_rankings/rankings.index.php');
+        
+        return;
     }
 
     /**
@@ -71,5 +72,6 @@ class controllers_stats_rankings extends core_services_controller
     protected function view()
     {
 
+        return;
     }
 }
